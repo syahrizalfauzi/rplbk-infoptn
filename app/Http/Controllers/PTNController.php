@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PTN;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -52,7 +53,7 @@ class PTNController extends Controller
 
         if ($request->hasFile('gambar')) {
             $path = Storage::disk('s3')->put("images", $request->file('gambar'));
-            $ptn->gambar = Storage::url($path);
+            $ptn->gambar = $path;
             $ptn->save();
         }
 
@@ -100,8 +101,9 @@ class PTNController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
+            Storage::disk('s3')->delete($ptn->gambar);
             $path = Storage::disk('s3')->put("images", $request->file('gambar'));
-            $ptn->gambar = Storage::url($path);
+            $ptn->gambar = $path;
         }
 
         $ptn->nama = $request->nama;
