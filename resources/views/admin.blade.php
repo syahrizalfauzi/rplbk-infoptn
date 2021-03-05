@@ -28,39 +28,38 @@
             {{ $ptns->links() }}
         </div>
     </div>
-    <div class="col-auto">
-        <table class="table table-hover table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Nama</th>
-                    <th scope="col">Deskripsi</th>
-                    <th scope="col">File Gambar</th>
-                    <th scope="col" colspan="2" class="text-center">Aksi</th>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Deskripsi</th>
+                <th scope="col">File Gambar</th>
+                <th scope="col" colspan="2" class="text-center">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($ptns as $ptn)
+                <tr onclick='window.location="{{ url("/$ptn->id") }}";' class="clickable">
+                    <th scope="row">{{ $ptn->id }}</th>
+                    <td>{{ $ptn->nama }}</td>
+                    <td>{{ Illuminate\Support\Str::limit($ptn->deskripsi, 50) }}</td>
+                    <td>{{ $ptn->gambar ?? '-' }}</td>
+                    <td>
+                        <a href="{{ url("edit/$ptn->id") }}" class="btn btn-info mr-2">Edit</a>
+                    </td>
+                    <td>
+                        <form action="{{ url("/$ptn->id") }}" method="post" class="form-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</a>
+                        </form>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($ptns as $ptn)
-                    <tr onclick='window.location="{{ url("/$ptn->id") }}";' class="clickable">
-                        <th scope="row">{{ $ptn->id }}</th>
-                        <td>{{ $ptn->nama }}</td>
-                        <td>{{ Illuminate\Support\Str::limit($ptn->deskripsi, 50) }}</td>
-                        <td>{{ $ptn->gambar ?? '-' }}</td>
-                        <td>
-                            <a href="{{ url("edit/$ptn->id") }}" class="btn btn-info mr-2">Edit</a>
-                        </td>
-                        <td>
-                            <form action="{{ url("/$ptn->id") }}" method="post" class="form-inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Hapus</a>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+            @endforeach
+        </tbody>
+    </table>
+
 
     <div class="float-right">
         {{ $ptns->links() }}

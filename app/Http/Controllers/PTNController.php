@@ -107,7 +107,7 @@ class PTNController extends Controller
             $ext = $request->file('gambar')->extension();
             $id = $ptn->id;
             $ptn->gambar = $ext;
-            $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
+            return $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
         }
 
         $ptn->nama = $request->nama;
