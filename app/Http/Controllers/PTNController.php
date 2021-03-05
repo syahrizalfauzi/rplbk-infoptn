@@ -54,7 +54,6 @@ class PTNController extends Controller
         if ($request->hasFile('gambar')) {
             $path = Storage::disk('s3')->put("images", $request->file('gambar'));
             $ptn->gambar = $path;
-            $ptn->save();
         }
 
         $ptn->nama = $request->nama;
