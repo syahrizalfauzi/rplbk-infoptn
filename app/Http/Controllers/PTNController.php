@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PTN;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PTNController extends Controller
 {
@@ -48,18 +49,17 @@ class PTNController extends Controller
         ]);
         $ptn = new PTN;
 
-        if ($request->hasFile('gambar')) {
-            $ext = $request->file('gambar')->extension();
-            $ptn->gambar = $ext;
-        }
+        // if ($request->hasFile('gambar')) {
+        //     $path = Storage::disk('s3')->put('images')
+        // }
 
         $ptn->nama = $request->nama;
         $ptn->deskripsi = $request->deskripsi;
         $ptn->save();
-        $id = $ptn->id;
 
         if ($request->hasFile('gambar')) {
-            $ptn->gambar = $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "s3");
+            $path = Storage::disk('s3')->put("images", $request->file('gambar'));
+            $ptn->gambar = $path;
             $ptn->save();
             // $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
         }
@@ -104,13 +104,19 @@ class PTNController extends Controller
             'deskripsi' => 'required'
         ]);
 
+        // if ($request->hasFile('gambar')) {
+        //     $ext = $request->file('gambar')->extension();
+        //     $id = $ptn->id;
+        //     // $ptn->gambar = $ext;
+        //     // $ptn->gambar =
+        //     return $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "s3");
+        //     // return $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
+        // }
+
+
         if ($request->hasFile('gambar')) {
-            $ext = $request->file('gambar')->extension();
-            $id = $ptn->id;
-            // $ptn->gambar = $ext;
-            // $ptn->gambar =
-            return $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "s3");
-            // return $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
+            $path = Storage::disk('s3')->put("images", $request->file('gambar'));
+            $ptn->gambar = $path;
         }
 
         $ptn->nama = $request->nama;
