@@ -47,25 +47,20 @@ class PTNController extends Controller
             'nama' => 'required|unique:ptn',
             'deskripsi' => 'required'
         ]);
+
         $ptn = new PTN;
 
-        // if ($request->hasFile('gambar')) {
-        //     $path = Storage::disk('s3')->put('images')
-        // }
+        if ($request->hasFile('gambar')) {
+            $path = Storage::disk('s3')->put("images", $request->file('gambar'));
+            $ptn->gambar = Storage::url($path);
+            $ptn->save();
+        }
 
         $ptn->nama = $request->nama;
         $ptn->deskripsi = $request->deskripsi;
         $ptn->save();
 
-        if ($request->hasFile('gambar')) {
-            $path = Storage::disk('s3')->put("images", $request->file('gambar'));
-            $ptn->gambar = $path;
-            $ptn->save();
-            // $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
-        }
-
         return redirect('/admin');
-        // return $request;
     }
 
     /**
@@ -104,19 +99,9 @@ class PTNController extends Controller
             'deskripsi' => 'required'
         ]);
 
-        // if ($request->hasFile('gambar')) {
-        //     $ext = $request->file('gambar')->extension();
-        //     $id = $ptn->id;
-        //     // $ptn->gambar = $ext;
-        //     // $ptn->gambar =
-        //     return $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "s3");
-        //     // return $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
-        // }
-
-
         if ($request->hasFile('gambar')) {
             $path = Storage::disk('s3')->put("images", $request->file('gambar'));
-            $ptn->gambar = $path;
+            $ptn->gambar = Storage::url($path);
         }
 
         $ptn->nama = $request->nama;

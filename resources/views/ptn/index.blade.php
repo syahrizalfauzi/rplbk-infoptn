@@ -29,7 +29,7 @@
 
             @if (isset($ptn->gambar))
                 <div class="p-4">
-                    <img src='{{ url("/storage/images/$ptn->id.$ptn->gambar") }}' alt="{{ $ptn->nama }}"
+                    <img src="{{ $ptn->gambar }}" alt="{{ $ptn->nama }}"
                         style="height: 128px; width:auto; object-fit:contain" />
                 </div>
             @endif
