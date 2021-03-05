@@ -17,13 +17,11 @@
             scroll-behavior: smooth;
         }
 
-        main {
-            padding-bottom: 120px;
+        body {
+            height: 100vh;
         }
 
         .footer {
-            position: absolute;
-            bottom: 0;
             width: 100%;
             background-color: #f5f5f5;
         }
@@ -46,6 +44,16 @@
             transform: scale(0.99);
         }
 
+        .clickable {
+            cursor: pointer;
+        }
+
+        .searchtext {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
     </style>
 
     <title>@yield('title')</title>
@@ -62,15 +70,30 @@
             <div class="ml-auto collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link @if ($__env->yieldContent('navlink') == 'Home') active text-white @endif " href="{{ url('/') }}">Home</a>
+                        <a class="nav-link px-2 @if ($__env->yieldContent('navlink') == 'Home') active text-white @endif " href="{{ url('/') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if ($__env->yieldContent('navlink') == 'About') active text-white @endif" href="{{ url('/about') }}">About</a>
+                        <a class="nav-link px-2 @if ($__env->yieldContent('navlink') ==
+                            'About') active text-white @endif"
+                            href="{{ url('/about') }}">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if ($__env->yieldContent('navlink') == 'Log in') active text-white @endif" href="{{ url('/login') }}">Log
-                            in</a>
-                    </li>
+                    @guest
+                        <li class="nav-item">
+                            <a class="nav-link px-2 @if ($__env->yieldContent('navlink') == 'Log
+                                in') active text-white @endif" href="{{ url('/login') }}">Log
+                                in</a>
+                        </li>
+                    @endguest
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link px-2 @if ($__env->yieldContent('navlink') ==
+                                'Dashboard') active text-white @endif"
+                                href="{{ url('/admin') }}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-2 text-danger" href="{{ url('/logout') }}">Log out</a>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </nav>
@@ -79,6 +102,8 @@
     <main role="main" class="container my-4">
         @yield('content')
     </main>
+
+    <div style="flex-grow:1;"></div>
 
     <footer class="footer p-4">
         <div class="container text-muted">

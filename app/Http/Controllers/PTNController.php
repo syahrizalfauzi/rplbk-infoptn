@@ -16,9 +16,10 @@ class PTNController extends Controller
     {
         if (isset($request->search)) {
             $s = $request->search;
-            $ptns = PTN::where('nama', 'LIKE', "%$s%")->orWhere('deskripsi', 'LIKE', "%$s%")->paginate(10);
+            $ptns = PTN::where('nama', 'LIKE', "%$s%")->orWhere('deskripsi', 'LIKE', "%$s%")->paginate(5);
+            $ptns->appends(['search' => $s]);
         } else {
-            $ptns = PTN::paginate(10);
+            $ptns = PTN::paginate(5);
         }
         return view('ptn.index', compact('ptns', 'request'));
     }
@@ -41,7 +42,29 @@ class PTNController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama' => 'required|unique:ptn',
+            'deskripsi' => 'required'
+        ]);
+        $ptn = new PTN;
+
+        if ($request->hasFile('gambar')) {
+            $ext = $request->file('gambar')->extension();
+            $ptn->gambar = $ext;
+        }
+
+        $ptn->nama = $request->nama;
+        $ptn->deskripsi = $request->deskripsi;
+        $ptn->save();
+        $id = $ptn->id;
+
+        if ($request->hasFile('gambar')) {
+
+            $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
+        }
+
+        return redirect('/admin');
+        // return $request;
     }
 
     /**
@@ -75,7 +98,23 @@ class PTNController extends Controller
      */
     public function update(Request $request, ptn $ptn)
     {
-        //
+        $request->validate([
+            'nama' => 'required',
+            'deskripsi' => 'required'
+        ]);
+
+        if ($request->hasFile('gambar')) {
+            $ext = $request->file('gambar')->extension();
+            $id = $ptn->id;
+            $ptn->gambar = $ext;
+            $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
+        }
+
+        $ptn->nama = $request->nama;
+        $ptn->deskripsi = $request->deskripsi;
+        $ptn->update();
+
+        return redirect('/admin');
     }
 
     /**
@@ -86,6 +125,7 @@ class PTNController extends Controller
      */
     public function destroy(ptn $ptn)
     {
-        //
+        $ptn->delete();
+        return redirect('/admin');
     }
 }

@@ -5,7 +5,17 @@
 
 @section('content')
     <div class="col-sm-12 col-md-8 col-lg-6">
-        <form action="#" class="container-fluid">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        <form action="{{ url('/login') }}" method="POST" class="container-fluid">
+            @csrf
             <h1>Log in</h1>
             <div class="form-group">
                 <label for="username">Username</label>

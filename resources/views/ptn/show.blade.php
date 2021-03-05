@@ -4,12 +4,18 @@
 
 @section('content')
     <article class="pb-4">
-        <a href="{{ url('/') }}" style="color: blue">
-            Kembali </a>
+        @auth
+            <a href="{{ url('/admin') }}" style="color: blue">
+                Kembali </a>
+        @endauth
+        @guest
+            <a href="{{ url('/') }}" style="color: blue">
+                Kembali </a>
+        @endguest
         <h1>{{ $ptn->nama }}</h1>
         @if (isset($ptn->gambar))
             <div class="text-center">
-                <img src="{{ url('/images/' . $ptn->gambar) }}" alt="{{ $ptn->nama }}"
+                <img src='{{ url("/storage/images/$ptn->id.$ptn->gambar") }}' alt="{{ $ptn->nama }}"
                     style="height: 256px; width:auto; object-fit:contain" class="my-4" />
             </div>
 

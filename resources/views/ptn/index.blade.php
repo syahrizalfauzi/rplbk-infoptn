@@ -13,15 +13,23 @@
             </div>
         </div>
     </form>
-    @if (isset($request->search))
-        <p class="mb-4">Hasil pencarian '{{ $request->search }}'</p>
-    @endif
+    <div class="d-flex flex-row align-items-center justify-content-between">
+        <p class="searchtext mb-4">
+            @if (isset($request->search))
+                Hasil pencarian '{{ $request->search }}'
+            @endif
+        </p>
+        <div class="flex-fill">
+
+            {{ $ptns->links() }}
+        </div>
+    </div>
     @foreach ($ptns as $ptn)
         <a href="{{ url("/$ptn->id") }}" class="card d-flex flex-sm-column flex-md-row mb-4 align-items-center zoom">
 
             @if (isset($ptn->gambar))
                 <div class="p-4">
-                    <img src="{{ url('/images/' . $ptn->gambar) }}" alt="{{ $ptn->nama }}"
+                    <img src='{{ url("/storage/images/$ptn->id.$ptn->gambar") }}' alt="{{ $ptn->nama }}"
                         style="height: 128px; width:auto; object-fit:contain" />
                 </div>
             @endif
@@ -35,7 +43,6 @@
     @endforeach
 
     <div class="float-right">
-
         {{ $ptns->links() }}
     </div>
 @endsection

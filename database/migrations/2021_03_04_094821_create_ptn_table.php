@@ -29,6 +29,6 @@ class CreatePtnTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ptn');
+        // Schema::dropIfExists('ptn');
     }
 }
