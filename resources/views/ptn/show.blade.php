@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Nama PTNNya di sini')
+@section('title', $ptn->nama)
 
 @section('content')
     <article class="pb-4">
