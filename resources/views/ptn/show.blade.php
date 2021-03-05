@@ -15,7 +15,7 @@
         <h1>{{ $ptn->nama }}</h1>
         @if (isset($ptn->gambar))
             <div class="text-center">
-                <img src='{{ url("/storage/images/$ptn->id.$ptn->gambar") }}' alt="{{ $ptn->nama }}"
+                <img src='{{ $ptn->gambar }}' alt="{{ $ptn->nama }}"
                     style="height: 256px; width:auto; object-fit:contain" class="my-4" />
             </div>
 

@@ -59,8 +59,9 @@ class PTNController extends Controller
         $id = $ptn->id;
 
         if ($request->hasFile('gambar')) {
-
-            $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
+            $ptn->gambar = $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "s3");
+            $ptn->save();
+            // $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
         }
 
         return redirect('/admin');
@@ -106,8 +107,10 @@ class PTNController extends Controller
         if ($request->hasFile('gambar')) {
             $ext = $request->file('gambar')->extension();
             $id = $ptn->id;
-            $ptn->gambar = $ext;
-            return $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "public");
+            // $ptn->gambar = $ext;
+            // $ptn->gambar =
+            return $request->file('gambar')->storePubliclyAs("images", "$id.$ext", "s3");
+            // return $request->file('gambar')->storePubliclyAs("public/images", "$id.$ext");
         }
 
         $ptn->nama = $request->nama;
