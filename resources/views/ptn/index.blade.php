@@ -29,7 +29,7 @@
 
             @if (isset($ptn->gambar))
                 <div class="p-4">
-                    <img src="{{ Illuminate\Support\Facades\Storage::path($ptn->gambar) }}" alt="{{ $ptn->nama }}"
+                    <img src="{{ Storage::url($ptn->gambar) }}" alt="{{ $ptn->nama }}"
                         style="height: 128px; width:auto; object-fit:contain" />
                 </div>
             @endif

@@ -44,7 +44,13 @@
                     <th scope="row">{{ $ptn->id }}</th>
                     <td>{{ $ptn->nama }}</td>
                     <td>{{ Illuminate\Support\Str::limit($ptn->deskripsi, 50) }}</td>
-                    <td>{{ $ptn->gambar ?? '-' }}</td>
+                    @if (isset($ptn->gambar))
+                        <td>
+                            <a href="{{ Storage::url($ptn->gambar) }}">Ada</a>
+                        </td>
+                    @else
+                        <td>-</td>
+                    @endif
                     <td>
                         <a href="{{ url("edit/$ptn->id") }}" class="btn btn-info mr-2">Edit</a>
                     </td>
