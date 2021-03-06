@@ -18,7 +18,8 @@ class PTNController extends Controller
     {
         if (isset($request->search)) {
             $s = $request->search;
-            $ptns = PTN::where('nama', 'LIKE', "%$s%")->orWhere('deskripsi', 'LIKE', "%$s%")->paginate(5);
+            $search = strtolower($s);
+            $ptns = PTN::whereRaw('lower(nama)', 'LIKE', "%$search%")->orWhereRaw('lower(deskripsi)', 'LIKE', "%$search%")->paginate(5);
             $ptns->appends(['search' => $s]);
         } else {
             $ptns = PTN::paginate(5);
@@ -54,7 +55,6 @@ class PTNController extends Controller
         if ($request->hasFile('gambar')) {
             $path = Storage::disk('s3')->put("images", $request->file('gambar'));
             $ptn->gambar = $path;
-            $ptn->save();
         }
 
         $ptn->nama = $request->nama;

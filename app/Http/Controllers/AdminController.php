@@ -17,7 +17,8 @@ class AdminController extends Controller
     {
         if (isset($request->search)) {
             $s = $request->search;
-            $ptns = PTN::where('nama', 'LIKE', "%$s%")->orWhere('deskripsi', 'LIKE', "%$s%")->paginate(10);
+            $search = strtolower($s);
+            $ptns = PTN::whereRaw('lower(nama)', 'LIKE', "%$search%")->orWhereRaw('lower(deskripsi)', 'LIKE', "%$search%")->paginate(10);
             $ptns->appends(['search' => $s]);
         } else {
             $ptns = PTN::paginate(10);
